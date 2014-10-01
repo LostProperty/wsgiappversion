@@ -10,7 +10,7 @@ def pkg_resources_version(package):
     return version
 
 
-def default_current_version(package):
+def package_version(package):
     version = pkg_resources_version(package)
 
     def inner():
@@ -20,10 +20,16 @@ def default_current_version(package):
 
 class ApplicationVersion(object):
 
-    def __init__(self, application, application_name, determine_version_callable=None, version_url='/version'):
-        if not determine_version_callable:
-            determine_version_callable = default_current_version(application_name)
-        self.determine_version_callable = determine_version_callable
+    def __init__(self, application, determine_version=None, version_url='/version'):
+        if determine_version is None:
+            msg = ('`determine_version` argument is required. It must be '
+                   'either a package name or callable that returns the '
+                   'package version')
+            raise TypeError(msg)
+        if not callable(determine_version):
+            determine_version = package_version(determine_version)
+
+        self.determine_version_callable = determine_version
         self.application = application
         self.version_url = version_url
 
