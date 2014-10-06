@@ -10,7 +10,7 @@ readme = open('README.rst').read()
 
 setup(
     name='wsgiappversion',
-    version='0.0.1',
+    version='1.0.0',
     description="Wsgi middleware that exposes an app's version number",
     long_description=readme,
     author='Rob Berry',
